@@ -189,4 +189,13 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 
 ---
 
-**Stay healthy, stay productive! 💙**
+## Project Notes (2026)
+
+- **Dialog Dismissal:** Reminders auto-dismiss after the configured duration. No explicit close/dismiss instructions are shown. Users can use OS-level shortcuts (Alt+F4, tab away) if needed.
+- **Date/Time Format:** The reminder dialog displays the current date and time using your system's locale. For example, Spanish: "27 de mayo de 2026"; English: "May 27th 2026".
+- **dist/ Folder:** The `dist/` folder is tracked in the repository and contains downloadable executables and sample config files for users.
+- **logs/ Folder:** The `logs/` folder is ignored and not included in the repository.
+- **build/py-care-windows/:** This build artifact folder is ignored; only build scripts/specs are tracked.
+- **Config File:** Messages can be defined at the root or under `reminder` in `config.yaml`.
+
+---

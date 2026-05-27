@@ -150,3 +150,14 @@ display:
 6. Test on both Windows and Mac
 7. Add auto-start capability
 8. Package for distribution
+
+---
+
+## 2026 Project State Updates
+
+- **Dialog Dismissal:** Only auto-dismiss and OS-level close (Alt+F4/tab away) are supported. No explicit close/dismiss instructions are shown in the dialog.
+- **Locale-Aware Date/Time:** Dialogs display the current date and time using the system's locale (e.g., "27 de mayo de 2026" for Spanish, "May 27th 2026" for English).
+- **.gitignore Policy:** The `dist/` folder is tracked for user downloads. `logs/`, `.venv/`, `.vscode/`, and `build/py-care-windows/` are ignored and not tracked.
+- **Config File Flexibility:** Messages can be defined at the root or under `reminder` in `config.yaml`.
+
+---
