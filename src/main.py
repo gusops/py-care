@@ -18,12 +18,12 @@ else:
     src_dir = Path(__file__).parent
     sys.path.insert(0, str(src_dir))
 
-# Import modules - direct imports work after path adjustment
-from logger import logger
-from config_manager import ConfigManager
-from scheduler import ReminderScheduler
-from dialog import ReminderDialog
-from tray_icon import TrayIcon
+# Import modules - use package imports for PyInstaller compatibility
+from src.logger import logger
+from src.config_manager import ConfigManager
+from src.scheduler import ReminderScheduler
+from src.dialog import ReminderDialog
+from src.tray_icon import TrayIcon
 
 
 class PyCareApp:

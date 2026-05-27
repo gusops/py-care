@@ -8,7 +8,10 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 from typing import Callable, Optional
 
-from logger import logger
+try:
+    from src.logger import logger
+except ImportError:
+    from logger import logger
 
 
 class TrayIcon:

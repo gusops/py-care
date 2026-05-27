@@ -9,7 +9,7 @@ from typing import Dict, Any, Optional
 import platform
 import threading
 import locale
-from logger import logger
+from src.logger import logger
 
 
 class ReminderDialog:
@@ -95,70 +95,24 @@ class ReminderDialog:
         # Set window to always be on top (override-redirect already set)
         window.attributes('-topmost', True)
         
-        # Bind escape key and click to dismiss
+        # Bind only escape key and space to dismiss (no click-to-dismiss)
         window.bind('<Escape>', lambda e: self._dismiss())
-        window.bind('<Button-1>', lambda e: self._dismiss())
         window.bind('<space>', lambda e: self._dismiss())
     
     def _create_content(self, window: tk.Misc) -> None:
-        """Create and layout the dialog content."""
+        """Create and layout the dialog content with message at top and time two lines below."""
         # Get display settings
         text_color = self.display_config.get('text_color', '#FFFFFF')
         font_family = self.display_config.get('font_family', 'Arial')
         font_size = self.display_config.get('font_size', 32)
+        datetime_font_size = self.display_config.get('datetime_font_size', font_size)
         show_datetime = self.display_config.get('show_datetime', True)
 
         # Create main frame
         main_frame = tk.Frame(window, bg=window['bg'])
         main_frame.place(relx=0.5, rely=0.5, anchor='center')
 
-        # Locale-aware date formatting
-        def get_locale_date():
-            now = datetime.now()
-            lang, _ = locale.getdefaultlocale() or (None, None)
-            if lang is not None and lang.lower().startswith('es'):
-                # Spanish: '27 de mayo de 2026'
-                months = [
-                    '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
-                ]
-                day = now.day
-                month = months[now.month]
-                year = now.year
-                hour = now.hour
-                minute = now.minute
-                return f"{day} de {month} de {year}  {hour:02d}:{minute:02d}"
-            else:
-                # English: 'May 27th 2026 14:30'
-                months = [
-                    '', 'January', 'February', 'March', 'April', 'May', 'June',
-                    'July', 'August', 'September', 'October', 'November', 'December'
-                ]
-                day = now.day
-                # Suffix for day
-                if 10 <= day % 100 <= 20:
-                    suffix = 'th'
-                else:
-                    suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
-                month = months[now.month]
-                year = now.year
-                hour = now.hour
-                minute = now.minute
-                return f"{month} {day}{suffix} {year}  {hour:02d}:{minute:02d}"
-
-        # Date and time label (if enabled)
-        if show_datetime:
-            current_datetime = get_locale_date()
-            datetime_label = tk.Label(
-                main_frame,
-                text=current_datetime,
-                font=(font_family, font_size, 'bold'),
-                fg=text_color,
-                bg=window['bg']
-            )
-            datetime_label.pack(pady=(0, 40))
-
-        # Message label
+        # Message label at the top
         message_label = tk.Label(
             main_frame,
             text=self.message,
@@ -168,10 +122,58 @@ class ReminderDialog:
             wraplength=window.winfo_screenwidth() - 200,
             justify='center'
         )
-        message_label.pack(pady=20)
-        
-        # Dismiss instruction
-        # No dismiss instructions shown (per user request)
+        message_label.pack(pady=(0, 0))
+
+        # Add a spacer label with four newlines for exact 4-line spacing
+        spacer = tk.Label(main_frame, text=" \n \n \n \n", bg=window['bg'])
+        spacer.pack()
+
+        # Locale-aware date formatting with 12-hour time, AM/PM, and pipe separator
+        def get_locale_date():
+            now = datetime.now()
+            lang, _ = locale.getdefaultlocale() or (None, None)
+            hour_12 = now.strftime('%I').lstrip('0') or '12'
+            minute = now.strftime('%M')
+            ampm = now.strftime('%p')
+            time_str = f"{hour_12}:{minute} {ampm}"
+            if lang is not None and lang.lower().startswith('es'):
+                months = [
+                    '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                ]
+                day = now.day
+                month = months[now.month]
+                year = now.year
+                date_str = f"{day} de {month} de {year}"
+            else:
+                months = [
+                    '', 'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ]
+                day = now.day
+                if 10 <= day % 100 <= 20:
+                    suffix = 'th'
+                else:
+                    suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+                month = months[now.month]
+                year = now.year
+                date_str = f"{month} {day}{suffix} {year}"
+            return f"{time_str} | {date_str}"
+
+        # Date and time label (if enabled)
+        if show_datetime:
+            current_datetime = get_locale_date()
+            # Center-align the date/time label
+            datetime_label = tk.Label(
+                main_frame,
+                text=current_datetime,
+                font=(font_family, datetime_font_size, 'bold'),
+                fg=text_color,
+                bg=window['bg'],
+                anchor='center',
+                justify='center',
+            )
+            datetime_label.pack(pady=(0, 40))
     
     def _schedule_auto_dismiss(self, window: tk.Misc) -> None:
         """Schedule automatic dismissal after duration."""

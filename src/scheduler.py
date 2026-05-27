@@ -7,7 +7,7 @@ import time
 from typing import Callable, List, Optional
 from datetime import datetime
 
-from logger import logger
+from src.logger import logger
 
 
 class ReminderScheduler:

@@ -2,7 +2,7 @@
 
 reminder:
   # Interval between reminders in minutes
-  interval_minutes: 20
+  interval_minutes: 1
   
   # Duration the dialog stays on screen in seconds (auto-dismiss)
   display_duration_seconds: 20
@@ -22,6 +22,8 @@ display:
   text_color: "#FFFFFF"
   font_family: "Arial"
   font_size: 32
+  # Font size for the date/time label
+  datetime_font_size: 20
   
   # Date/time format (24-hour)
   show_datetime: true
