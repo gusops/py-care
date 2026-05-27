@@ -2,7 +2,7 @@
 
 reminder:
   # Interval between reminders in minutes
-  interval_minutes: 1
+  interval_minutes: 20
   
   # Duration the dialog stays on screen in seconds (auto-dismiss)
   display_duration_seconds: 20
