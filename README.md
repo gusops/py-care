@@ -1,6 +1,7 @@
-# py-care
+display:
+# GusOps PyCare
 
-A simple desktop app for Windows and Mac to reduce screen time fatigue. Balance your digital life with reminders to hydrate, look away, and move.
+Simple fullscreen reminder app for Windows and Mac.
 
 ## Features
 
@@ -12,113 +13,58 @@ A simple desktop app for Windows and Mac to reduce screen time fatigue. Balance 
 - 🎯 **System Tray**: Runs quietly in background, exit via tray icon
 - ⚙️ **YAML Configuration**: Easy-to-edit configuration file
 
-## Installation
-
-### Prerequisites
-- Python 3.8 or higher
-- Windows 10/11 or macOS 10.14+
-
-### Steps
-
-1. **Clone the repository**:
-   ```bash
-   git clone <repository-url>
-   cd py-care
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-   Or install in development mode:
-   ```bash
-   pip install -e .
-   ```
-
 ## Usage
 
-### Running the Application
+1. **Run the app:**
+   - From source:
+     ```bash
+     python src/main.py
+     ```
+   - Or run the packaged exe from `dist/windows/py-care.exe` (Windows build).
 
-```bash
-python src/main.py
-```
-
-Or if installed:
-```bash
-py-care
-```
-
-The application will:
-1. Start in the background
-2. Display a tray icon in your system tray
-3. Show fullscreen reminders at configured intervals
-4. Right-click the tray icon and select "Exit" to quit
-
-### Dismissing Reminders
-
-When a reminder appears, you can dismiss it by:
-- Pressing `ESC`
-- Pressing `SPACE`
-- Clicking anywhere on the screen
-- Waiting for auto-dismiss (default: 10 seconds)
+2. **How it works:**
+   - Starts in the background with a tray icon.
+   - Shows fullscreen reminders at your configured interval.
+   - Dismiss reminders with `ESC` or `SPACE`, or wait for auto-dismiss.
+   - Right-click the tray icon and select "Exit" to quit.
 
 ## Configuration
 
-Edit `config.yaml` in the project root to customize:
+Edit `config.yaml` to set interval, duration, messages, and appearance. Example:
 
 ```yaml
 reminder:
-  interval_minutes: 20              # Time between reminders
-  display_duration_seconds: 10      # Auto-dismiss after this time
+  interval_minutes: 20
+  display_duration_seconds: 10
   messages:
-    - "Your custom message 1"
-    - "Your custom message 2"
-    # Add more messages...
+    - "Look away from the screen."
+    - "Stretch your body."
 
-display:
-  background_color: "#000000"       # Black background
-  text_color: "#FFFFFF"             # White text
+├── assets/
+  background_color: "#000000"
+  text_color: "#FFFFFF"
   font_family: "Arial"
   font_size: 32
+  datetime_font_size: 24
   show_datetime: true
-  datetime_format: "%Y-%m-%d %H:%M:%S"
 ```
 
-### Message Behavior
+## Build (Windows)
 
-- Messages display in **sequence** (not random)
-- One message per reminder
-- After the last message, cycles back to the first
-
-## Custom Tray Icon
-
-To use a custom icon:
-
-1. Create or download a `.ico` file (recommended for Windows)
-   - Recommended: Multi-size ICO with 16x16, 32x32, 64x64 pixels
-   - Alternative: PNG file (256x256 or 512x512)
-
-2. Save your icon file in the `assets/icons/` folder
-
-3. Update the icon loading in `src/tray_icon.py` to use your custom file
-
-See [assets/icons/README.md](assets/icons/README.md) for detailed instructions and design guidelines.
-
-## Development
-
-### Project Structure
-
-```
-py-care/
-├── src/
-│   ├── __init__.py
-│   ├── main.py              # Application entry point
-│   ├── config_manager.py    # Configuration loader
-│   ├── scheduler.py         # Reminder timing
-│   ├── dialog.py            # Fullscreen dialog
-│   └── tray_icon.py         # System tray icon
-├── assets/
+1. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate
+   ```
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Build the exe:
+   ```bash
+   .\build\build-windows.ps1
+   ```
+4. Find the exe in `dist/windows/py-care.exe`.
 │   └── icons/               # Icon files (.ico, .png)
 ├── docs/
 │   ├── architecture.md      # Architecture documentation
