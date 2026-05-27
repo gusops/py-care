@@ -1,0 +1,28 @@
+# py-care Configuration File
+
+reminder:
+  # Interval between reminders in minutes
+  interval_minutes: 20
+  
+  # Duration the dialog stays on screen in seconds (auto-dismiss)
+  display_duration_seconds: 20
+  
+  # Mensajes mostrados en secuencia, uno por recordatorio
+messages:
+  - "¡Es hora de tomar un descanso! Mira a 6 metros de distancia durante 20 segundos."
+  - "¡Mantente hidratado! Toma un poco de agua."
+  - "Estira tu cuerpo. Muévete un poco durante un minuto."
+  - "Descansa tus ojos. Ciérralos por unos segundos."
+  - "Revisa tu postura. ¡Siénate derecho!"
+  - "Respira profundo. Relaja tus hombros."
+
+display:
+  # Dialog appearance
+  background_color: "#000000"
+  text_color: "#FFFFFF"
+  font_family: "Arial"
+  font_size: 32
+  
+  # Date/time format (24-hour)
+  show_datetime: true
+  datetime_format: "%Y-%m-%d %H:%M:%S"
