@@ -1,0 +1,8 @@
+# Packaging dependencies
+# Install these for building distributable executables
+
+# PyInstaller for creating executables
+pyinstaller>=6.0.0
+
+# Additional packaging tools (optional)
+# auto-py-to-exe>=2.40.0  # GUI for PyInstaller (optional)
