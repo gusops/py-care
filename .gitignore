@@ -224,3 +224,9 @@ build/py-care-windows/
 .venv/
 .mypy_cache/
 .vscode/
+
+# Do NOT ignore dist/ so it is tracked and visible in the repo
+!dist/
+!dist/windows/
+!dist/windows/config.yaml
+!dist/windows/py-care.exe
