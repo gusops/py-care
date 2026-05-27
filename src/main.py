@@ -114,19 +114,14 @@ class PyCareApp:
     
     def _on_exit(self) -> None:
         """Handle application exit."""
-        self._shutdown()
-    
         logger.info("\nShutting down GusOps PyCare...")
         self.running = False
-        
         # Stop scheduler
         if self.scheduler:
             self.scheduler.stop()
-        
         # Stop tray icon
         if self.tray_icon:
             self.tray_icon.stop()
-        
         logger.info("Goodbye!")
         # Stop tray icon
         if self.tray_icon:

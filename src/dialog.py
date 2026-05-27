@@ -2,12 +2,13 @@
 Fullscreen dialog window for displaying reminder messages.
 """
 
+
 import tkinter as tk
 from datetime import datetime
 from typing import Dict, Any, Optional
 import platform
 import threading
-
+import locale
 from logger import logger
 
 
@@ -106,25 +107,57 @@ class ReminderDialog:
         font_family = self.display_config.get('font_family', 'Arial')
         font_size = self.display_config.get('font_size', 32)
         show_datetime = self.display_config.get('show_datetime', True)
-        datetime_format = self.display_config.get('datetime_format', 
-                                                   '%Y-%m-%d %H:%M:%S')
-        
+
         # Create main frame
         main_frame = tk.Frame(window, bg=window['bg'])
         main_frame.place(relx=0.5, rely=0.5, anchor='center')
-        
+
+        # Locale-aware date formatting
+        def get_locale_date():
+            now = datetime.now()
+            lang, _ = locale.getdefaultlocale() or (None, None)
+            if lang is not None and lang.lower().startswith('es'):
+                # Spanish: '27 de mayo de 2026'
+                months = [
+                    '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                ]
+                day = now.day
+                month = months[now.month]
+                year = now.year
+                hour = now.hour
+                minute = now.minute
+                return f"{day} de {month} de {year}  {hour:02d}:{minute:02d}"
+            else:
+                # English: 'May 27th 2026 14:30'
+                months = [
+                    '', 'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ]
+                day = now.day
+                # Suffix for day
+                if 10 <= day % 100 <= 20:
+                    suffix = 'th'
+                else:
+                    suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+                month = months[now.month]
+                year = now.year
+                hour = now.hour
+                minute = now.minute
+                return f"{month} {day}{suffix} {year}  {hour:02d}:{minute:02d}"
+
         # Date and time label (if enabled)
         if show_datetime:
-            current_datetime = datetime.now().strftime(datetime_format)
+            current_datetime = get_locale_date()
             datetime_label = tk.Label(
                 main_frame,
                 text=current_datetime,
-                font=(font_family, font_size // 2),
+                font=(font_family, font_size, 'bold'),
                 fg=text_color,
                 bg=window['bg']
             )
             datetime_label.pack(pady=(0, 40))
-        
+
         # Message label
         message_label = tk.Label(
             main_frame,

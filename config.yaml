@@ -5,7 +5,7 @@ reminder:
   interval_minutes: 20
   
   # Duration the dialog stays on screen in seconds (auto-dismiss)
-  display_duration_seconds: 10
+  display_duration_seconds: 20
   
   # Mensajes mostrados en secuencia, uno por recordatorio
 messages:
